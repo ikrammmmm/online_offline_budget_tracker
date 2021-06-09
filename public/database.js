@@ -1,12 +1,7 @@
 let database;
 const request = indexedDB.open("budget-tracker", 1);
 
-function saveRecord(transaction) 
-{
-  const transaction = database.transaction(["pending-transaction"], "readwrite");
-  const store = transaction.objectStore("pending-transaction");
-  store.add(transaction);
-}
+
 
 function checkLocalDB() {
   const transaction = database.transaction(["pending-transaction"], "readwrite");
@@ -31,7 +26,12 @@ function checkLocalDB() {
     }
   };
 }
-
+function saveRecord(transaction) 
+{
+  const transaction = database.transaction(["pending-transaction"], "readwrite");
+  const store = transaction.objectStore("pending-transaction");
+  store.add(transaction);
+}
 request.onupgradeneeded =  (event) =>{
   const database = event.target.result;
   database.createObjectStore("pending-transaction", { autoIncrement: true });
