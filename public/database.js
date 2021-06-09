@@ -1,14 +1,10 @@
 let database;
 const request = indexedDB.open("budget-tracker", 1);
-
-
-
-
-function saveRecord(transaction) 
+function saveRecord(record) 
 {
   var transaction = database.transaction(["pending-transaction"], "readwrite");
   var store = transaction.objectStore("pending-transaction");
-  store.add(transaction);
+  store.add(record);
 }
 
 function checkLocalDB() {
