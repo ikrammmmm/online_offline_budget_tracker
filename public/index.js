@@ -113,7 +113,7 @@ function sendTransaction(isAdding) {
   populateTotal();
   
   // also send to server
-  fetch("https://us-east-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/budget-tracker-qlteo/service/budget-tracker/incoming_webhook/add", {
+  fetch("/api/transaction", {
     method: "POST",
     body: JSON.stringify(transaction),
     headers: {
