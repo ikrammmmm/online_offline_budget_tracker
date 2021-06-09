@@ -1,16 +1,16 @@
 let database;
-const request = indexedDB.open("budget-tracker", 1);
+const databaseRequest = indexedDB.open("budget-tracker", 1);
 function saveRecord(record) 
 {
   var transaction = database.transaction(["pending-transaction"], "readwrite");
-  var store = transaction.objectStore("pending-transaction");
-  store.add(record);
+  var transactionStore = transaction.objectStore("pending-transaction");
+  transactionStore.add(record);
 }
 
 function checkLocalDB() {
   var transaction = database.transaction(["pending-transaction"], "readwrite");
-  var store = transaction.objectStore("pending-transaction");
-  var getAll = store.getAll();
+  var transactionStore = transaction.objectStore("pending-transaction");
+  var getAll = transactionStore.getAll();
 
   getAll.onsuccess = function () {
     var result  = getAll.result
@@ -21,22 +21,21 @@ function checkLocalDB() {
         headers: {
           Accept: "application/json, text/plain, */*",
           "Content-Type": "application/json"
-        }
-      }).then(response => response.json()).then(() => {
+        }}).then(response => response.json()).then(() => {
           const transaction = database.transaction(["pending-transaction"], "readwrite");
-          const store = transaction.objectStore("pending-transaction");
-          store.clear();
+          const transactionStore = transaction.objectStore("pending-transaction");
+          transactionStore.clear();
         });
     }
   };
 }
 
-request.onupgradeneeded =  (event) =>{
+databaseRequest.onupgradeneeded =  (event) =>{
   const database = event.target.result;
   database.createObjectStore("pending-transaction", { autoIncrement: true });
 };
 
-request.onsuccess =  (event) =>
+databaseRequest.onsuccess =  (event) =>
 {
   database = event.target.result;
   if (navigator.onLine) {
@@ -44,8 +43,8 @@ request.onsuccess =  (event) =>
   }
 }
 
-request.onerror =  (event) =>{
-  console.log("Woops! " + event.target.errorCode);
+databaseRequest.onerror =  (event) =>{
+  console.log("Error! " + event.target.errorCode);
 };
 
 
