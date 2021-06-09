@@ -3,6 +3,14 @@ const request = indexedDB.open("budget-tracker", 1);
 
 
 
+
+function saveRecord(transaction) 
+{
+  const transaction = database.transaction(["pending-transaction"], "readwrite");
+  const store = transaction.objectStore("pending-transaction");
+  store.add(transaction);
+}
+
 function checkLocalDB() {
   const transaction = database.transaction(["pending-transaction"], "readwrite");
   const store = transaction.objectStore("pending-transaction");
@@ -26,12 +34,7 @@ function checkLocalDB() {
     }
   };
 }
-function saveRecord(transaction) 
-{
-  const transaction = database.transaction(["pending-transaction"], "readwrite");
-  const store = transaction.objectStore("pending-transaction");
-  store.add(transaction);
-}
+
 request.onupgradeneeded =  (event) =>{
   const database = event.target.result;
   database.createObjectStore("pending-transaction", { autoIncrement: true });
@@ -45,8 +48,8 @@ request.onsuccess =  (event) =>
   }
 }
 
-request.onerror =  (event) => {
-  console.log("Error : " + event.target.errorCode);
+request.onerror =  (event) =>{
+  console.log("Woops! " + event.target.errorCode);
 };
 
 
