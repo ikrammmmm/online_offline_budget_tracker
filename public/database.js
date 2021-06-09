@@ -6,15 +6,15 @@ const request = indexedDB.open("budget-tracker", 1);
 
 function saveRecord(transaction) 
 {
-  const transaction = database.transaction(["pending-transaction"], "readwrite");
-  const store = transaction.objectStore("pending-transaction");
+  var transaction = database.transaction(["pending-transaction"], "readwrite");
+  var store = transaction.objectStore("pending-transaction");
   store.add(transaction);
 }
 
 function checkLocalDB() {
-  const transaction = database.transaction(["pending-transaction"], "readwrite");
-  const store = transaction.objectStore("pending-transaction");
-  const getAll = store.getAll();
+  var transaction = database.transaction(["pending-transaction"], "readwrite");
+  var store = transaction.objectStore("pending-transaction");
+  var getAll = store.getAll();
 
   getAll.onsuccess = function () {
     var result  = getAll.result
